@@ -1,16 +1,19 @@
 package com.crud.tasks.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.management.DescriptorKey;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrelloBoardDto {
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TrelloListDto {
 
     @JsonProperty("id")
     private String id;
@@ -19,5 +22,5 @@ public class TrelloBoardDto {
     private String name;
 
     @JsonProperty("lists")
-    private List<TrelloListDto> lists;
+    private boolean isClosed;
 }
