@@ -19,6 +19,8 @@ public class TrelloController {
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
     public void getTrelloBoards() {
 
+        System.out.println("cos cos cos");
+
 
         // GET request
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
