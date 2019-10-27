@@ -1,5 +1,7 @@
 package com.crud.tasks.trello.client;
 
+import com.crud.tasks.controller.TaskNotFoundException;
+import com.crud.tasks.domain.Badges;
 import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
@@ -36,14 +38,16 @@ public class TrelloClient {
 
     public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/cards")
-                .queryParam("key",trelloAppKey)
+                .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
-                .queryParam("name",trelloCardDto.getName())
-                .queryParam("desc",trelloCardDto.getDescription())
-                .queryParam("pos",trelloCardDto.getPos())
-                .queryParam("idList",trelloCardDto.getListId()).build().encode().toUri();
+                .queryParam("fields","id,badges")
+                .queryParam("idList", trelloCardDto.getListId()).build().encode().toUri();
 
-        return restTemplate.postForObject(url,null,CreatedTrelloCard.class);
+        System.out.println(url.toString());
+
+
+
+        return restTemplate.postForObject(url, null,  CreatedTrelloCard.class);
     }
 
     public List<TrelloBoardDto> getTrelloBoards() {
@@ -51,16 +55,15 @@ public class TrelloClient {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloUsername + "/boards")
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
-                .queryParam("fields","name,id")
-                .queryParam("lists","all").build().encode().toUri();
+                .queryParam("fields", "name,id")
+                .queryParam("lists", "all").build().encode().toUri();
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
 
-        //System.out.println(url.toString());
-
-        if(boardsResponse != null) {
+        System.out.println(url.toString());
+        if (boardsResponse != null) {
             return Arrays.asList(boardsResponse);
         }
-        return new ArrayList<>();
+            return new ArrayList<>();
     }
 }
