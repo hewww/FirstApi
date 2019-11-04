@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Mail {
     private String mailTo;
     private String subject;
