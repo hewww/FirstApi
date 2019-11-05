@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import sun.reflect.generics.tree.ArrayTypeSignature;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,4 +69,17 @@ public class TrelloClient {
         }
 
     }
+
+    public List<TrelloCardDto> getTrelloCards() {
+
+        URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/lists/5d97243fbf33b429da85bcaa/cards")
+                .queryParam("key", trelloConfig.getTrelloAppKey())
+                .queryParam("token", trelloConfig.getTrelloToken()).build().encode().toUri();
+
+        TrelloCardDto[] cardsResponse = restTemplate.getForObject(url,TrelloCardDto[].class);
+        System.out.println(url.toString());
+        return Arrays.asList(ofNullable(cardsResponse).orElse(new TrelloCardDto[0]));
+
+    }
+
 }
